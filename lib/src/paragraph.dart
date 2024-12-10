@@ -310,6 +310,11 @@ class Normalization {
     int compPos = 1;
     var starterCh = text[0];
 
+    if (lengths.length < text.length) {
+      // Resize the lengths array while preserving existing data
+      lengths.addAll(List<int>.filled(text.length - lengths.length, 0));
+    }
+
     lengths[starterPos] = lengths[starterPos] + 1;
 
     var lastClass = _getCanonicalClass(starterCh);
@@ -350,7 +355,7 @@ class Normalization {
         //char_lengths[compPos] = char_lengths[compPos] + 1;
         int chkPos = compPos;
         if (lengths[chkPos] < 0) {
-          while (lengths[chkPos] < 0) {
+          while (chkPos < lengths.length && lengths[chkPos] < 0) {
             lengths[chkPos] = lengths[chkPos] + 1;
             lengths.insert(compPos, 0);
             chkPos++;
